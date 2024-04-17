@@ -1,9 +1,15 @@
 
+using Microsoft.EntityFrameworkCore;
+using Talabat.Core.Entities;
+using Talabat.Core.Repositories.Contruct;
+using Talabat.Repository;
+using Talabat.Repository.Data;
+
 namespace Talabat.APIs
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +20,38 @@ namespace Talabat.APIs
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
+
+            builder.Services.AddDbContext<StoreContext>(Option =>
+            {
+                Option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
+
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<Product>>();
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<ProductBrand>>();
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<ProductCategory>>();
+
+            builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
+
             var app = builder.Build();
+
+            using var scope = app.Services.CreateScope();
+
+            var services = scope.ServiceProvider;
+
+            var _dbContext = services.GetRequiredService<StoreContext>(); // Ask CLR for creating object from DbContext Explicitly
+
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>(); // Ask CLR for creating object from ILoggerFactory Explicitly
+
+            try
+            {
+                await _dbContext.Database.MigrateAsync();
+                await StoreContextSeed.SeedAsync(_dbContext);
+            }
+            catch (Exception ex)
+            {
+                var logger = loggerFactory.CreateLogger<Program>();
+                logger.LogError(ex, "an error has been occured during apply the migration");
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -26,7 +63,6 @@ namespace Talabat.APIs
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
