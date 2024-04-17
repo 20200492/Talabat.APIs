@@ -26,11 +26,11 @@ namespace Talabat.APIs
                 Option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
-            builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<Product>>();
-            builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<Product>>();
-            builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<Product>>();
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<Product>>();
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<ProductBrand>>();
+            ///builder.Services.AddScoped<IGenaricRepository<Product>, GenaricRepository<ProductCategory>>();
 
-            builder.Services.AddScoped(typeof(IGenaricRepository<>),typeof(GenaricRepository<>));
+            builder.Services.AddScoped(typeof(IGenaricRepository<>), typeof(GenaricRepository<>));
 
             var app = builder.Build();
 
@@ -38,9 +38,9 @@ namespace Talabat.APIs
 
             var services = scope.ServiceProvider;
 
-            var _dbContext = services.GetRequiredService<StoreContext>(); // ask clr for creating object from DbContext Explicitly
+            var _dbContext = services.GetRequiredService<StoreContext>(); // Ask CLR for creating object from DbContext Explicitly
 
-            var loggerFactory = services.GetRequiredService<ILoggerFactory>();
+            var loggerFactory = services.GetRequiredService<ILoggerFactory>(); // Ask CLR for creating object from ILoggerFactory Explicitly
 
             try
             {
@@ -63,7 +63,6 @@ namespace Talabat.APIs
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

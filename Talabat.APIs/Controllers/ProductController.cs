@@ -6,8 +6,6 @@ using Talabat.Repository;
 
 namespace Talabat.APIs.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
     public class ProductController : BaseAPIController
     {
         private readonly IGenaricRepository<Product> _productRepo;
