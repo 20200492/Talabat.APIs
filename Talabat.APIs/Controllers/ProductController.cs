@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Talabat.APIs.Dtos;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contruct;
 using Talabat.Core.Specification;
@@ -11,24 +13,26 @@ namespace Talabat.APIs.Controllers
     public class ProductController : BaseAPIController
     {
         private readonly IGenaricRepository<Product> _productRepo;
+        private readonly IMapper _mapper;
 
-        public ProductController(IGenaricRepository<Product> productRepo)
+        public ProductController(IGenaricRepository<Product> productRepo,IMapper mapper)
         {
             _productRepo = productRepo;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductToReturnDto>>> GetProducts()
         {
             var Spec = new ProductBrandCategorySpecifications();
 
             var products = await _productRepo.GetAllWithSpecAsync(Spec);
 
-            return Ok(products);
+            return Ok(_mapper.Map<IEnumerable<Product>, IEnumerable<ProductToReturnDto>>(products));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Product>> GetProduct(int id)
+        public async Task<ActionResult<ProductToReturnDto>> GetProduct(int id)
         {
             var Spec = new ProductBrandCategorySpecifications(id);
 
@@ -37,7 +41,7 @@ namespace Talabat.APIs.Controllers
             if (product is null)
                 return NotFound(new { StatusCode = 404, Message = "Not Found" }); // 404
 
-            return Ok(product); // 200
+            return Ok(_mapper.Map<Product,ProductToReturnDto>(product)); // 200
         }
     } 
 }

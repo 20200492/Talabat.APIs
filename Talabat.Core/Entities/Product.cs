@@ -19,6 +19,5 @@ namespace Talabat.Core.Entities
         //[ForeignKey(nameof(Product.Category))] // Make this in Fluent API
         public int CategoryId { get; set; } // Foriegn Key Column => ProductCategory
         public ProductCategory Category { get; set; } // Navigational Property [ONE]
-
     }
 }
