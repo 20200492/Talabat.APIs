@@ -12,6 +12,9 @@ namespace Talabat.Core.Specification
     {
         public Expression<Func<T, bool>>? Crateria { get; set; } = null;
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
+        public Expression<Func<T,object>> OrderBy { get; set; }
+        public Expression<Func<T, object>> OrderByDesc { get; set; }
+        //_dbContext.Set<Product>().Orderby(P => P.Name).Include(P => P.Brand).Include(P => P.Category)
 
         public BaseSpecifications()
         {

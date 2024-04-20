@@ -27,10 +27,10 @@ namespace Talabat.APIs.Controllers
             _categoryRepo = categoryRepo;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts()
+        [HttpGet()]
+        public async Task<ActionResult<IReadOnlyList<ProductToReturnDto>>> GetProducts(string sort)
         {
-            var Spec = new ProductBrandCategorySpecifications();
+            var Spec = new ProductBrandCategorySpecifications(sort);
 
             var products = await _productRepo.GetAllWithSpecAsync(Spec);
 
