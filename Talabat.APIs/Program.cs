@@ -1,7 +1,7 @@
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Talabat.APIs.Controllers.Errors;
+using Talabat.APIs.Errors;
 using Talabat.APIs.Helpers;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contruct;
