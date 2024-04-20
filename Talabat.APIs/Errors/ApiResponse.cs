@@ -1,11 +1,11 @@
-﻿namespace Talabat.APIs.Controllers.Errors
+﻿namespace Talabat.APIs.Errors
 {
     public class ApiResponse
     {
         public int Code { get; set; }
         public string? Message { get; set; }
 
-        public ApiResponse(int code, string?  message = null)
+        public ApiResponse(int code, string? message = null)
         {
             Code = code;
             Message = message ?? GetDefaultMessageForStatus(code);

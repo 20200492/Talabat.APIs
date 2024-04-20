@@ -1,4 +1,4 @@
-﻿namespace Talabat.APIs.Controllers.Errors
+﻿namespace Talabat.APIs.Errors
 {
     public class ValidationResponse : ApiResponse
     {
