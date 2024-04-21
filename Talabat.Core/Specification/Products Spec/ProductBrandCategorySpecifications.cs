@@ -11,18 +11,19 @@ namespace Talabat.Core.Specification.Products_Spec
     public class ProductBrandCategorySpecifications : BaseSpecifications<Product>
     {
         // This Constructor will be used for Creating an Object, That will be Used to Get All Productd  
-        public ProductBrandCategorySpecifications(string sort,int? brandId, int? categoryId) 
+        public ProductBrandCategorySpecifications(ProductSpecParams productSpecParams) 
             :base(P => 
             
-                     (!brandId.HasValue || P.BrandId == brandId) &&
-                     (!categoryId.HasValue || P.CategoryId == categoryId)
+                     (!productSpecParams.brandId.HasValue || P.BrandId == productSpecParams.brandId) &&
+                     (!productSpecParams.categoryId.HasValue || P.CategoryId == productSpecParams.categoryId)
             )
         {
-            Includes();
+            Includes.Add(P => P.Brand);
+            Includes.Add(P => P.Category);
 
-            if (!string.IsNullOrEmpty(sort))
+            if (!string.IsNullOrEmpty(productSpecParams.sort))
             {
-                switch (sort)
+                switch (productSpecParams.sort)
                 {
                     case "priceAsc":
                         {
@@ -42,17 +43,15 @@ namespace Talabat.Core.Specification.Products_Spec
             }
             else
                 OrderBy = P => P.Name;
+
+
+            ApplyPagination((productSpecParams.PageIndex - 1) * productSpecParams.PageSize, productSpecParams.PageSize);
         }
 
         public ProductBrandCategorySpecifications(int id) : base(P => P.Id == id)
         {
-            Includes();
-        }
-
-        private void Includes()
-        {
-            base.Includes.Add(P => P.Brand);
-            base.Includes.Add(P => P.Category);
+            Includes.Add(P => P.Brand);
+            Includes.Add(P => P.Category);
         }
     }
 }

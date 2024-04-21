@@ -21,17 +21,22 @@ namespace Talabat.Repository
                                                                                             
 
             if (Spec.OrderBy is not null)
-                query = query.OrderBy(Spec.OrderBy);  // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name)                                                     
+                query = query.OrderBy(Spec.OrderBy);  // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name)
+                                                      
             else if (Spec.OrderByDesc is not null) 
                 query = query.OrderByDescending(Spec.OrderByDesc); 
+
+
+            if(Spec.IsPaginationEnabeld)
+                query = query.Skip(Spec.Skip).Take(Spec.Take); // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name).Skip(10).Take(10)
 
             //Includes Expressions
             // 1 .P => P.Brand
             // 2 .P => P.Category
 
             query = Spec.Includes.Aggregate(query, (currentQuery, includeExpression) => currentQuery.Include(includeExpression));
-            // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name).Include(P => P.Brand)
-            // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name).Include(P => P.Brand).Include(P => P.Category)
+            // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name).Skip(10).Take(10).Include(P => P.Brand)
+            // query = _dbContext.Set<Products>.Where(P => P.BrandId == brandId && true).Orderby(P => P.Name).Skip(10).Take(10).Include(P => P.Brand).Include(P => P.Category)
 
             return query;
         }
