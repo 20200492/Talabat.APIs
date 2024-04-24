@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Talabat.APIs.Controllers.Errors;
+using Talabat.APIs.Errors;
 using Talabat.APIs.Dtos;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contruct;
