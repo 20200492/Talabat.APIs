@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Talabat.APIs.Controllers.Errors;
+using Talabat.APIs.Errors;
 using Talabat.Core.Entities;
 using Talabat.Core.Repositories.Contruct;
 using Talabat.Core.Specification.Employees.Spec;

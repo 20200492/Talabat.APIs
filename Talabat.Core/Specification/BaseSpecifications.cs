@@ -12,6 +12,11 @@ namespace Talabat.Core.Specification
     {
         public Expression<Func<T, bool>>? Crateria { get; set; } = null;
         public List<Expression<Func<T, object>>> Includes { get; set; } = new List<Expression<Func<T, object>>>();
+        public Expression<Func<T,object>> OrderBy { get; set; }
+        public Expression<Func<T, object>> OrderByDesc { get; set; }
+        public bool IsPaginationEnabeld { get; set; }
+        public int Skip { get; set ; }
+        public int Take { get; set; }
 
         public BaseSpecifications()
         {
@@ -23,6 +28,13 @@ namespace Talabat.Core.Specification
         {
             //Includes = new List<Expression<Func<T, object>>>();
             Crateria = crateriaExpression;
+        }
+
+        public void ApplyPagination(int skip, int take)
+        {
+            IsPaginationEnabeld = true;
+            Skip = skip;
+            Take = take;
         }
     }
 }
