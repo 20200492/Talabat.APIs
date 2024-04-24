@@ -13,12 +13,21 @@ namespace Talabat.Core.Specification
         public int? categoryId { get; set; }
         public int PageIndex { get; set; } = 1;
 
-        const int fixedSize = 10;
-        private int pagesize;
+        const int MaxSize = 10;
+        private int pagesize = 5;
         public int PageSize
         {
             get { return pagesize; }
-            set { pagesize = value > pagesize ? value : pagesize; }
+            set { pagesize = value > MaxSize ? MaxSize : value; }
         }
+
+        private string? search;
+
+        public string? Search
+        {
+            get { return search; }
+            set { search = value?.ToLower(); }
+        }
+
     }
 }
